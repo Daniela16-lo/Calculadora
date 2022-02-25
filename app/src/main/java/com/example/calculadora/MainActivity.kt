@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 class MainActivity : AppCompatActivity() {
 
     private var textView: TextView? = null
-    private var num1: Double= 0.0
-    private var num2: Double= 0.0
+    private var num1: Int= 0
+    private var num2: Int= 0
     private var operacion: Int= 0
 
 
@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         val buttonRes: Button = findViewById<Button>(R.id.button11)
         val buttonMult: Button = findViewById<Button>(R.id.button7)
         val buttonDiv: Button = findViewById<Button>(R.id.button3)
+        val buttonIg: Button = findViewById<Button>(R.id.button18)
 
 
 
@@ -51,23 +52,43 @@ class MainActivity : AppCompatActivity() {
         button7?.setOnClickListener { numeroPresionado("7")}
         button8?.setOnClickListener { numeroPresionado("8")}
         button9?.setOnClickListener { numeroPresionado("9")}
-        button10?.setOnClickListener { textView?.text = "" }
+        button10?.setOnClickListener {
+            num1=0
+            num2=0
+            textView?.text = ""
+            operacion = No_op}
 
         buttonSum?.setOnClickListener { operacionPresionada(SUMA ) }
         buttonRes?.setOnClickListener { operacionPresionada(RESTA ) }
         buttonMult?.setOnClickListener { operacionPresionada(MULTIPLICACION) }
         buttonDiv?.setOnClickListener { operacionPresionada(DIVISION) }
 
+        buttonIg?.setOnClickListener {
+            var resultado = when(operacion){
+                SUMA -> num1 + num2
+                RESTA -> num1 - num2
+                MULTIPLICACION -> num1 * num2
+                DIVISION-> num1 / num2
+                else -> 0
+            }
+            textView?.text = resultado.toString()
+        }
 
     }
     private fun numeroPresionado(digito: String){
         textView?.text= "${textView?.text}$digito"
+        if (operacion == No_op){
+            num1 = textView?.text.toString().toInt()
+        }else {
+            num2 = textView?.text.toString().toInt()
+        }
+
     }
 
     private fun operacionPresionada(operacion: Int){
         this.operacion= operacion
 
-        num1 = textView?.text.toString().toDouble()
+       // num1 = textView?.text.toString().toDouble()
         textView?.text="0"
     }
 
@@ -76,6 +97,8 @@ class MainActivity : AppCompatActivity() {
         const val RESTA = 2
         const val MULTIPLICACION = 3
         const val DIVISION = 4
+        const val No_op = 5
+
     }
 
     }
